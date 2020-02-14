@@ -1,10 +1,14 @@
-*.zip
-*.code-workspace
-*.php_cs
-
-#Allow
-!CHANGELOG.md
-!HOWTO.md
+# Allow
+!bin/*.fcl.g
+!EULA.txt
 !LICENSE.txt
 !makefile
-!README.md
+!*.md
+
+# Ignore
+bin/*.zip
+img
+*.code-workspace
+*.bb
+*.php_cs
+*.pwd
