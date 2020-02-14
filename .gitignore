@@ -1,0 +1,10 @@
+*.zip
+*.code-workspace
+*.php_cs
+
+#Allow
+!CHANGELOG.md
+!HOWTO.md
+!LICENSE.txt
+!makefile
+!README.md
