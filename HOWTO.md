@@ -1,4 +1,4 @@
-#HOWTO
+# HOWTO
 
 ## How to install
 * Start by making a backup (both DB and store files)!!!
