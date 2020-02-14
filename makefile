@@ -1,20 +1,19 @@
-mod=$(shell basename `pwd`)
-bin=bin
-doc=doc
-img=img
-src=src
-pwd=hideg.pwd
-zip=$(mod).ocmod.zip
-pkg=$(mod).zip
+mod_name=$(shell basename `pwd`)
+bin_dir=bin
+img_dir=img
+src_dir=src
+zip_dir=zip
+pwd_file=hideg.pwd
+ocm_file=$(mod_name).ocmod.zip
 ymd=202001010000.00
 
 
 # ckeck module license type
 ifeq ($(shell test -e "EULA.txt" && echo -n yes),yes)
-    lic=EULA.txt
-	ign="yes"
+    lic_file=EULA.txt
+	ignore_src="yes"
 else ifeq ($(shell test -e "LICENSE.txt" && echo -n yes),yes)
-    lic=LICENSE.txt
+    lic_file=LICENSE.txt
 endif
 
 # check availiability of necessary tools
@@ -28,67 +27,66 @@ default: zip
 
 # making zip-file
 zip: enc
-	@mkdir -p "$(bin)"
-	@rm -rf "$(bin)/$(zip)"
+	if [ -d $(zip_dir) ]; then rm -f "$(zip_dir)/$(ocm_file)"; else mkdir -p "$(zip_dir)"; fi
 
 	@echo Setting date/time...
-	@find "$(src)" -exec touch -a -m -t $(ymd) {} \;
+	@find "$(src_dir)" -exec touch -a -m -t $(ymd) {} \;
 	@echo Setting date/time [DONE]
 
 	@echo Making ZIP...;
-	cd "$(src)" && zip -9qrX "../$(bin)/$(zip)" * "../$(lic)"
+	cd "$(src_dir)" && zip -9qrX "../$(zip_dir)/$(ocm_file)" * "../$(lic_file)"
 
 	@echo Making ZIP [DONE]
 
 	@echo
-	@echo Module \""$(mod)"\" successfully compiled!
+	@echo Module \""$(mod_name)"\" successfully compiled!
 	@echo
 
 # packing/encrypting bin-file
 enc: pwd
 	@echo
 	@echo ----------------
-	@if [ -f "$(pwd)" ]; then \
+	@if [ -f "$(pwd_file)" ]; then \
 		echo Making FCL...; \
-		mkdir -p "$(bin)"; \
-		fcl make -q -f -E$(bin) -E$(img) -E.git -Ehideg.pwd "$(bin)/$(mod)"; \
+		mkdir -p "$(bin_dir)"; \
+		fcl make -q -f -E$(bin_dir) -E$(img_dir) -E.git -Ehideg.pwd "$(bin_dir)/$(mod_name)"; \
 		echo Making FCL [DONE]; \
 		echo Making HIDEG...; \
-		hideg "$(bin)/$(mod).fcl"; \
+		hideg "$(bin_dir)/$(mod_name).fcl"; \
 		echo Making HIDEG [DONE]; \
-		rm -f "$(bin)/$(mod).fcl"; \
+		rm -f "$(bin_dir)/$(mod_name).fcl"; \
 	fi
 
 # check pwd-file
 pwd: git
-	@if [ ! -f "$(pwd)" ]; then \
+	@if [ ! -f "$(pwd_file)" ]; then \
 		hideg; \
 	fi
 
 # exclude src dir for paid modules and add for free
 git:
-	@if [ ! -z $(ign) ]; then \
-		grep -xqF -- "src" ".gitignore" || echo "src" >> ".gitignore"; \
+	@if [ ! -z $(ignore_src) ]; then \
+		grep -xqF -- "$(src_dir)" ".gitignore" || printf "\n$(src_dir)\n" >> ".gitignore"; \
 	else \
-		grep -v "src" ".gitignore" > ".gitignore.tmp"; \
+		grep -v "$(src_dir)" ".gitignore" > ".gitignore.tmp"; \
 		mv -f .gitignore.tmp .gitignore; \
 	fi
 
 # decrypting/unpacking bin
 dec: pwd
-	@if [ -f "$(pwd)" -a -f "$(bin)/$(mod).fcl.g" ]; then \
-		hideg "$(bin)/$(mod).fcl.g"; \
-		fcl extr -f "$(bin)/$(mod).fcl"; \
-	elif [ -a -f "$(bin)/$(mod).fcl" ]; then \
-		fcl extr -f "$(bin)/$(mod).fcl"; \
+	@if [ -f "$(pwd_file)" -a -f "$(bin_dir)/$(mod_name).fcl.g" ]; then \
+		hideg "$(bin_dir)/$(mod_name).fcl.g"; \
+		fcl extr -f "$(bin_dir)/$(mod_name).fcl"; \
+	elif [ -a -f "$(bin_dir)/$(mod_name).fcl" ]; then \
+		fcl extr -f "$(bin_dir)/$(mod_name).fcl"; \
 	fi
 
 # show list of files in fcl-file
 list: pwd
-	@if [ -f "$(pwd)" -a -f "$(bin)/$(mod).fcl.g" ]; then \
-		hideg "$(bin)/$(mod).fcl.g"; \
-		fcl list "$(bin)/$(mod).fcl"; \
-		rm -f "$(bin)/$(mod).fcl"; \
-	elif [ -a -f "$(bin)/$(mod).fcl" ]; then \
-		fcl list -f "$(bin)/$(mod).fcl"; \
+	@if [ -f "$(pwd_file)" -a -f "$(bin_dir)/$(mod_name).fcl.g" ]; then \
+		hideg "$(bin_dir)/$(mod_name).fcl.g"; \
+		fcl list "$(bin_dir)/$(mod_name).fcl"; \
+		rm -f "$(bin_dir)/$(mod_name).fcl"; \
+	elif [ -a -f "$(bin_dir)/$(mod_name).fcl" ]; then \
+		fcl list -f "$(bin_dir)/$(mod_name).fcl"; \
 	fi
