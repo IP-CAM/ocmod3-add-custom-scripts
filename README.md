@@ -14,12 +14,8 @@ Scripts can be stored in different groups.
 * To get certain group(array) of scripts is using  `$this->document->getCustomScripts($group)`, where:
     * `$group` - name of script group, type: string;
 
-## Links
-* [GitHub](https://git.io/JvltB)
-* [Homepage](https://underr.space/notes/projects/project-021.html)
-
 ## License
-Licensed under [MIT](https://raw.githubusercontent.com/underr-ua/ocmod3-add-custom-scripts/master/LICENSE.txt)
+Licensed under [MIT](https://git.io/JvEHu)
 
 ## Related modules and extensions
 * [Path Manager+](https://www.opencart.com/index.php?route=marketplace/extension/info&extension_id=38192)
