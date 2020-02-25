@@ -17,6 +17,10 @@ Scripts can be stored in different groups.
 ## License
 Licensed under [MIT](https://git.io/JvEHu)
 
+## Additional Links
+* [Homepage](https://underr.space/tag:opencart)
+* [OpenCart Marketplace](https://www.opencart.com/index.php?route=marketplace/extension&filter_member=ocmod.space)
+
 ## Related modules and extensions
 * [Path Manager+](https://www.opencart.com/index.php?route=marketplace/extension/info&extension_id=38192)
 * [Breadcrumbs+](https://www.opencart.com/index.php?route=marketplace/extension/info&extension_id=35022)
